@@ -50,8 +50,9 @@ type WebDav struct {
 }
 
 type Zone struct {
-	A  string `json:"A" toml:"A"`
-	MX string `json:"MX" toml:"MX"`
+	A   string `json:"A" toml:"A"`
+	MX  string `json:"MX" toml:"MX"`
+	TXT string `json:"TXT" toml:"TXT"`
 }
 
 type Config struct {

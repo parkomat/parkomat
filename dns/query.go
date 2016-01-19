@@ -68,6 +68,25 @@ func (dns *DNS) ParseQuery(msg *mdns.Msg) {
 				}
 			}
 
+		case "TXT":
+			for _, txt := range strings.Split(z.TXT, "\n") {
+				txt = strings.Trim(txt, " ")
+				if txt != "" {
+					s := strings.Join([]string{
+						q.Name,
+						"3600",
+						"IN",
+						"TXT",
+						txt,
+					}, " ")
+
+					rr, err := mdns.NewRR(s)
+					if err == nil {
+						msg.Answer = append(msg.Answer, rr)
+					}
+				}
+			}
+
 		case "SOA":
 			s := strings.Join(
 				[]string{
