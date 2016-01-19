@@ -23,6 +23,7 @@ func (dns *DNS) HandleRequest(w mdns.ResponseWriter, r *mdns.Msg) {
 	msg := &mdns.Msg{}
 	msg.SetReply(r)
 	msg.Compress = false
+	msg.Authoritative = true
 
 	switch r.Opcode {
 	case mdns.OpcodeQuery:
