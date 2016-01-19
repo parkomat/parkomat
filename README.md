@@ -51,9 +51,12 @@ name = "parkomat.io"
 	# supports per domain zone settings
 	[domains.zone]
 	A = "192.168.0.1"
-	MX = '''
+	MX = """
 1 better.mail.server
-'''
+"""
+	TXT = """
+hello world
+"""
 
 # each domain will use following zone settings
 [zone]
