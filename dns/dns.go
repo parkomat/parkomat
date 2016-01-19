@@ -33,12 +33,12 @@ func (dns *DNS) HandleRequest(w mdns.ResponseWriter, r *mdns.Msg) {
 	w.WriteMsg(msg)
 }
 
-func (dns *DNS) Serve() (err error) {
-	glog.Info("[dns] Serve...")
+func (dns *DNS) Serve(net string) (err error) {
+	glog.Info("[dns] Serve over ", net, "...")
 
 	dns.Server = &mdns.Server{
 		Addr: dns.Config.DNS.IP + ":" + strconv.Itoa(dns.Config.DNS.Port),
-		Net:  "udp",
+		Net:  net,
 	}
 
 	mdns.HandleFunc(".", dns.HandleRequest)

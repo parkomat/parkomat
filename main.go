@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/golang/glog"
 	"github.com/parkomat/parkomat/config"
 	"github.com/parkomat/parkomat/dns"
@@ -11,6 +12,8 @@ import (
 )
 
 func main() {
+	fmt.Println("Parkomat (parkomat.io)")
+
 	configFile := flag.String("config_file", "parkomat.toml", "Configuration File")
 	dnsOnly := flag.Bool("dns_only", false, "Run only DNS server")
 	flag.Parse()
@@ -30,7 +33,17 @@ func main() {
 	wg.Add(1)
 	go func() {
 		d := dns.NewDNS(c)
-		err = d.Serve()
+		err = d.Serve("udp")
+		if err != nil {
+			glog.Error("[main] DNS error: ", err)
+		}
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		d := dns.NewDNS(c)
+		err = d.Serve("tcp")
 		if err != nil {
 			glog.Error("[main] DNS error: ", err)
 		}
