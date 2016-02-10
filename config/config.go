@@ -23,11 +23,11 @@ type Domain struct {
 
 type Server struct {
 	Name string `json:"name" toml:"name"`
-	IP   string `json:ip" toml:"ip"`
+	IP   string `json:"ip" toml:"ip"`
 }
 
 type Web struct {
-	IP        string `json:ip" toml:"ip"`
+	IP        string `json:"ip" toml:"ip"`
 	Port      int    `json:"port" toml:"port"`
 	SSLPort   int    `json:"ssl_port" toml:"ssl_port"`
 	Path      string `json:"path" toml:"path"`
@@ -36,7 +36,7 @@ type Web struct {
 }
 
 type DNS struct {
-	IP   string `json:ip" toml:"ip"`
+	IP   string `json:"ip" toml:"ip"`
 	Port int    `json:"port" toml:"port"`
 
 	Servers []Server `json:"servers"`
