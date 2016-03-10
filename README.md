@@ -17,7 +17,7 @@ Parkomat is useful when you have a lot of domains and managing them via typical 
 
 ### Installation
 
-Parkomat at the moment doesn't provide pre-built binaries, so you need to have Go installed. Latest version of Go is recommended.
+Parkomat at the moment doesn't provide pre-built binaries, so you need to have Go 1.5+ installed. Latest version of Go is recommended.
 
 To build, issue:
 
