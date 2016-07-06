@@ -25,12 +25,6 @@ To build, issue:
 go get github.com/parkomat/parkomat
 ```
 
-You can also update it calling:
-
-```
-go get -u github.com/parkomat/parkomat
-```
-
 ### Setting up
 
 As a configuration format Parkomat uses [TOML](https://github.com/toml-lang/toml)
@@ -106,6 +100,11 @@ To run parkomat in DNS only mode, use:
 ```
 ./parkomat -dns_only=true -config_file=/path/to/config.toml
 ```
+
+You can also use following environment variables, that will overwrite passed arguments:
+
+`PARKOMAT_CONFIG_FILE` - path to the configuration file, for example `/path/to/config.toml`
+`PARKOMAT_DNS_ONLY` - `true` or `false` for DNS only mode
 
 ### Web server directory structure
 
