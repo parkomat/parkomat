@@ -39,6 +39,8 @@ docker pull parkomat\parkomat
 docker run -d -e PARKOMAT_CONFIG_FILE=/opt/parkomat/config.toml -v /your/parkomat/directory:/opt/parkomat -p 53:53/udp parkomat
 ```
 
+Remember to have `config.toml` file in your `/your/parkomat/directory` path.
+
 ### Example Configuration:
 
 Note: instead of `127.0.0.1` use your external IP.
