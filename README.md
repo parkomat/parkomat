@@ -116,6 +116,7 @@ To run parkomat in DNS only mode, use:
 You can also use following environment variables, that will overwrite passed arguments:
 
 `PARKOMAT_CONFIG_FILE` - path to the configuration file, for example `/path/to/config.toml`
+
 `PARKOMAT_DNS_ONLY` - `true` or `false` for DNS only mode
 
 ### Web server directory structure
