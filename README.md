@@ -25,15 +25,21 @@ To build, issue:
 go get github.com/parkomat/parkomat
 ```
 
-You can also update it calling:
-
-```
-go get -u github.com/parkomat/parkomat
-```
-
 ### Setting up
 
 As a configuration format Parkomat uses [TOML](https://github.com/toml-lang/toml)
+
+### Try with Docker
+
+```
+docker pull parkomat/parkomat
+```
+
+```
+docker run -d -e PARKOMAT_CONFIG_FILE=/opt/parkomat/config.toml -v /your/parkomat/directory:/opt/parkomat -p 53:53/udp parkomat/parkomat
+```
+
+Remember to have `config.toml` file in your `/your/parkomat/directory` path.
 
 ### Example Configuration:
 
@@ -106,6 +112,11 @@ To run parkomat in DNS only mode, use:
 ```
 ./parkomat -dns_only=true -config_file=/path/to/config.toml
 ```
+
+You can also use following environment variables, that will overwrite passed arguments:
+
+`PARKOMAT_CONFIG_FILE` - path to the configuration file, for example `/path/to/config.toml`
+`PARKOMAT_DNS_ONLY` - `true` or `false` for DNS only mode
 
 ### Web server directory structure
 

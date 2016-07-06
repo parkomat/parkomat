@@ -2,7 +2,7 @@ package webdav
 
 import (
 	"fmt"
-	"github.com/golang/glog"
+	log "github.com/Sirupsen/logrus"
 	"github.com/parkomat/parkomat/config"
 	"golang.org/x/net/webdav"
 	"net/http"
@@ -36,7 +36,9 @@ func (wd *WebDav) Init() error {
 		return fmt.Errorf("WebDav not configured")
 	}
 
-	glog.Info("[WebDav] Starting...")
+	log.WithFields(log.Fields{
+		"service": "webdav",
+	}).Info("Init")
 
 	wd.mount(wd.Config.Web.Path)
 
@@ -45,7 +47,12 @@ func (wd *WebDav) Init() error {
 		FileSystem: wd.fs,
 		LockSystem: webdav.NewMemLS(),
 		Logger: func(r *http.Request, err error) {
-			glog.Infof("[dav] %-10s%-30s%v", r.Method, r.URL.Path, err)
+			log.WithFields(log.Fields{
+				"service": "webdav",
+				"method":  r.Method,
+				"path":    r.URL.Path,
+				"error":   err,
+			}).Info("Request")
 		},
 	}
 

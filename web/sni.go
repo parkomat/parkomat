@@ -9,7 +9,7 @@ package web
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/golang/glog"
+	log "github.com/Sirupsen/logrus"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -19,14 +19,18 @@ import (
 
 func (server *Server) ListenAndServeTLSSNI() (err error) {
 	// TODO: fix it!
-	var log *os.File = os.Stdout
+	var lf *os.File = os.Stdout
 	if server.Config.Web.AccessLog != "" {
-		log, err = os.OpenFile(server.Config.Web.AccessLog, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		lf, err = os.OpenFile(server.Config.Web.AccessLog, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
-			glog.Error("[web] Can't create log file.", err)
+			log.WithFields(log.Fields{
+				"service": "web",
+				"path":    server.Config.Web.AccessLog,
+				"error":   err,
+			}).Error("Can't create log file")
 		}
 	}
-	hl := NewHttpLogHandler(server.mux, log)
+	hl := NewHttpLogHandler(server.mux, lf)
 
 	hs := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", server.Config.Web.IP, server.Config.Web.SSLPort),
@@ -38,32 +42,47 @@ func (server *Server) ListenAndServeTLSSNI() (err error) {
 		Certificates: []tls.Certificate{},
 	}
 
-	glog.Info("[web] Looking for certificates in ", server.Config.Web.Path)
+	log.WithFields(log.Fields{
+		"service": "web",
+		"path":    server.Config.Web.Path,
+	}).Info("Loading certificates")
 
 	// Let's walk through our www dir hoping to find some certificates
 	files, _ := ioutil.ReadDir(server.Config.Web.Path)
 	for _, f := range files {
-		glog.Info("[web] ", f.Name())
 		if f.Name() != "default" {
 			key := path.Join(server.Config.Web.Path, f.Name(), fmt.Sprintf("%s.key", f.Name()))
 			crt := path.Join(server.Config.Web.Path, f.Name(), fmt.Sprintf("%s.crt", f.Name()))
 
 			_, err1 := os.Stat(key)
 			if err1 != nil {
-				glog.Info("[web] No key file for ", f.Name(), " domain.")
+				log.WithFields(log.Fields{
+					"service": "web",
+					"name":    f.Name(),
+				}).Warning("No .key file")
 				continue
 			}
 			_, err1 = os.Stat(crt)
 			if err1 != nil {
-				glog.Info("[web] No crt file for ", f.Name(), " domain.")
+				log.WithFields(log.Fields{
+					"service": "web",
+					"name":    f.Name(),
+				}).Warning("No .crt file")
 				continue
 			}
 
-			glog.Info("[web] Adding SSL cert for ", f.Name(), " domain.")
+			log.WithFields(log.Fields{
+				"service": "web",
+				"name":    f.Name(),
+			}).Info("Adding SSL certificate")
 
 			cert, err1 := tls.LoadX509KeyPair(crt, key)
 			if err1 != nil {
-				glog.Error("[web] Invalid SSL cert for ", f.Name(), " domain.")
+				log.WithFields(log.Fields{
+					"service": "web",
+					"name":    f.Name(),
+					"error":   err1,
+				}).Error("Invalid SSL certificate")
 				continue
 			}
 			d := server.Config.GetDomain(f.Name())
@@ -81,7 +100,11 @@ func (server *Server) ListenAndServeTLSSNI() (err error) {
 
 	conn, err := net.Listen("tcp", hs.Addr)
 	if err != nil {
-		glog.Error("[web] Can't listen: ", err)
+		log.WithFields(log.Fields{
+			"service": "web",
+			"addr":    hs.Addr,
+			"error":   err,
+		}).Error("Can't listen")
 		return
 	}
 

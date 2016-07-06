@@ -2,7 +2,7 @@ package web
 
 import (
 	"fmt"
-	"github.com/golang/glog"
+	log "github.com/Sirupsen/logrus"
 	"github.com/parkomat/parkomat/config"
 	"net/http"
 	"os"
@@ -31,18 +31,26 @@ func (server *Server) AddHandlerFunc(path string, handlerFunc http.HandlerFunc) 
 }
 
 func (server *Server) Serve() (err error) {
-	glog.Info("[web] Serve...")
+	log.WithFields(log.Fields{
+		"service": "web",
+		"ip":      server.Config.Web.IP,
+		"port":    server.Config.Web.Port,
+	}).Info("Serve")
 
-	var log *os.File = os.Stdout
+	var lf *os.File = os.Stdout
 	if server.Config.Web.AccessLog != "" {
-		log, err = os.OpenFile(server.Config.Web.AccessLog, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		lf, err = os.OpenFile(server.Config.Web.AccessLog, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
-			glog.Error("[web] Can't create log file.", err)
+			log.WithFields(log.Fields{
+				"service": "web",
+				"path":    server.Config.Web.AccessLog,
+				"error":   err,
+			}).Error("Can't create log file")
 			return
 		}
 	}
 
-	hl := NewHttpLogHandler(server.mux, log)
+	hl := NewHttpLogHandler(server.mux, lf)
 
 	err = http.ListenAndServe(
 		fmt.Sprintf("%s:%d",
@@ -51,10 +59,16 @@ func (server *Server) Serve() (err error) {
 		hl)
 
 	if err != nil {
-		glog.Error("[web] Listen error: ", err)
+		log.WithFields(log.Fields{
+			"service": "web",
+			"ip":      server.Config.Web.IP,
+			"port":    server.Config.Web.Port,
+		}).Error("Can't listen")
 		return
 	}
 
-	glog.Info("[web] Shutdown...")
+	log.WithFields(log.Fields{
+		"service": "web",
+	}).Info("Shutdown")
 	return
 }
