@@ -127,11 +127,12 @@ You `./web` path could look like this:
 ├── default
 │   └── public_html
 │       └── index.html
-└── parkomat.io
-    ├── parkomat.io.crt
-    ├── parkomat.io.key
-    └── public_html
-        └── index.html
+├── parkomat.io
+|   ├── parkomat.io.crt
+|   ├── parkomat.io.key
+|   └── public_html
+|       └── index.html
+└── config.toml
 ```
 
 To add new domain, simply create new directory with that domain name.
@@ -142,18 +143,6 @@ All your html and other files go to `public_html` directory.
 ### WebDav
 
 If you want to use WebDav with windows, the domain you will be using it with should have certificates uploaded. Apparently WebDav doesn't work without SSL on Windows.
-
-### Running
-
-You can use attached `supervisord` script as an example.
-
-You can also run it from command line:
-
-```
-./bin/parkomat -logtostderr=true
-```
-
-This will print debug information, useful for troubleshooting
 
 ### TO DO
 
