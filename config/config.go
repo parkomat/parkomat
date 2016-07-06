@@ -5,6 +5,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"strings"
+	"fmt"
 )
 
 type Domain struct {
@@ -38,7 +39,6 @@ type Web struct {
 type DNS struct {
 	IP   string `json:"ip" toml:"ip"`
 	Port int    `json:"port" toml:"port"`
-
 	Servers []Server `json:"servers"`
 }
 
@@ -72,6 +72,7 @@ func (config *Config) Refresh() {
 	// Without the need of restarting the service
 }
 
+// NewConfigFromFile reads configuration from specified filename
 func NewConfigFromFile(filename string) (config *Config, err error) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -82,10 +83,15 @@ func NewConfigFromFile(filename string) (config *Config, err error) {
 		return nil, err
 	}
 
+	if len(config.DNS.Servers) == 0 {
+		return nil, fmt.Errorf("No DNS servers specified")
+	}
+
 	config.normalizeData()
 	return
 }
 
+// normalizeData makes sure all domains are in the same format
 func (config *Config) normalizeData() {
 	for i, _ := range config.Domains {
 		d := config.Domains[i]
@@ -93,6 +99,7 @@ func (config *Config) normalizeData() {
 	}
 }
 
+// NewConfigFromJSONFile reads configuration from JSON formatted file
 func NewConfigFromJSONFile(filename string) (config *Config, err error) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -108,6 +115,7 @@ func NewConfigFromJSONFile(filename string) (config *Config, err error) {
 	return
 }
 
+// HasDomain checks if domain exists in the loaded configuration
 func (c *Config) HasDomain(domain string) bool {
 	if c.CatchAll == true {
 		return true
@@ -121,6 +129,8 @@ func (c *Config) HasDomain(domain string) bool {
 	return false
 }
 
+// GetDomain gets domain details from the loaded configuration. If CatchAll is enabled it will create new
+// Domain record if it doesn't exist
 func (c *Config) GetDomain(domain string) *Domain {
 	for i, _ := range c.Domains {
 		if strings.Contains(domain, c.Domains[i].Name) {

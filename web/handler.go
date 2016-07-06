@@ -2,7 +2,7 @@ package web
 
 import (
 	"fmt"
-	"github.com/golang/glog"
+	log "github.com/Sirupsen/logrus"
 	"net/http"
 	"os"
 	"path"
@@ -21,7 +21,11 @@ func (server *Server) handler() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		glog.Info("[web] Request: ", r.Host, " ", r.URL.Path)
+		log.WithFields(log.Fields{
+			"service": "web",
+			"host":    r.Host,
+			"path":    r.URL.Path,
+		}).Info("Request")
 
 		// TODO: optimize this monster! ;)
 		fp := path.Join(server.Config.Web.Path, r.Host, "public_html", r.URL.Path)
@@ -31,7 +35,10 @@ func (server *Server) handler() func(w http.ResponseWriter, r *http.Request) {
 			_, err = os.Stat(fp)
 			if err != nil {
 				if os.IsNotExist(err) {
-					glog.Error("[web] Not found: ", fp)
+					log.WithFields(log.Fields{
+						"service": "web",
+						"path":    fp,
+					}).Warning("Not found")
 					http.NotFound(w, r)
 					return
 				}

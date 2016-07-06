@@ -25,15 +25,21 @@ To build, issue:
 go get github.com/parkomat/parkomat
 ```
 
-You can also update it calling:
-
-```
-go get -u github.com/parkomat/parkomat
-```
-
 ### Setting up
 
 As a configuration format Parkomat uses [TOML](https://github.com/toml-lang/toml)
+
+### Try with Docker
+
+```
+docker pull parkomat/parkomat
+```
+
+```
+docker run -d -e PARKOMAT_CONFIG_FILE=/opt/parkomat/config.toml -v /your/parkomat/directory:/opt/parkomat -p 53:53/udp parkomat/parkomat
+```
+
+Remember to have `config.toml` file in your `/your/parkomat/directory` path.
 
 ### Example Configuration:
 
@@ -107,6 +113,11 @@ To run parkomat in DNS only mode, use:
 ./parkomat -dns_only=true -config_file=/path/to/config.toml
 ```
 
+You can also use following environment variables, that will overwrite passed arguments:
+
+`PARKOMAT_CONFIG_FILE` - path to the configuration file, for example `/path/to/config.toml`
+`PARKOMAT_DNS_ONLY` - `true` or `false` for DNS only mode
+
 ### Web server directory structure
 
 You `./web` path could look like this:
@@ -116,11 +127,12 @@ You `./web` path could look like this:
 ├── default
 │   └── public_html
 │       └── index.html
-└── parkomat.io
-    ├── parkomat.io.crt
-    ├── parkomat.io.key
-    └── public_html
-        └── index.html
+├── parkomat.io
+|   ├── parkomat.io.crt
+|   ├── parkomat.io.key
+|   └── public_html
+|       └── index.html
+└── config.toml
 ```
 
 To add new domain, simply create new directory with that domain name.
@@ -131,18 +143,6 @@ All your html and other files go to `public_html` directory.
 ### WebDav
 
 If you want to use WebDav with windows, the domain you will be using it with should have certificates uploaded. Apparently WebDav doesn't work without SSL on Windows.
-
-### Running
-
-You can use attached `supervisord` script as an example.
-
-You can also run it from command line:
-
-```
-./bin/parkomat -logtostderr=true
-```
-
-This will print debug information, useful for troubleshooting
 
 ### TO DO
 
