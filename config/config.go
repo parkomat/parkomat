@@ -5,6 +5,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"strings"
+	"fmt"
 )
 
 type Domain struct {
@@ -80,6 +81,10 @@ func NewConfigFromFile(filename string) (config *Config, err error) {
 
 	if _, err := toml.Decode(string(file), &config); err != nil {
 		return nil, err
+	}
+
+	if len(config.DNS.Servers) == 0 {
+		return nil, fmt.Errorf("No DNS servers specified")
 	}
 
 	config.normalizeData()

@@ -29,6 +29,16 @@ go get github.com/parkomat/parkomat
 
 As a configuration format Parkomat uses [TOML](https://github.com/toml-lang/toml)
 
+### Try with Docker
+
+```
+docker pull parkomat\parkomat
+```
+
+```
+docker run -d -e PARKOMAT_CONFIG_FILE=/opt/parkomat/config.toml -v /your/parkomat/directory:/opt/parkomat -p 53:53/udp parkomat
+```
+
 ### Example Configuration:
 
 Note: instead of `127.0.0.1` use your external IP.
