@@ -2,10 +2,10 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"strings"
-	"fmt"
 )
 
 type Domain struct {
@@ -37,8 +37,8 @@ type Web struct {
 }
 
 type DNS struct {
-	IP   string `json:"ip" toml:"ip"`
-	Port int    `json:"port" toml:"port"`
+	IP      string   `json:"ip" toml:"ip"`
+	Port    int      `json:"port" toml:"port"`
 	Servers []Server `json:"servers"`
 }
 

@@ -1,10 +1,10 @@
 package dns
 
 import (
-  "testing"
-  mdns "github.com/miekg/dns"
-  "github.com/stretchr/testify/assert"
-  "github.com/parkomat/parkomat/config"
+	mdns "github.com/miekg/dns"
+	"github.com/parkomat/parkomat/config"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestTXTHandle(t *testing.T) {
