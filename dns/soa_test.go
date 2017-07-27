@@ -1,9 +1,9 @@
 package dns
 
 import (
-  "testing"
-  mdns "github.com/miekg/dns"
-  "github.com/stretchr/testify/assert"
+	mdns "github.com/miekg/dns"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestSOAHandle(t *testing.T) {

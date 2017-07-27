@@ -1,10 +1,10 @@
 package dns
 
 import (
-  "testing"
-  mdns "github.com/miekg/dns"
-  "github.com/stretchr/testify/assert"
-  "github.com/parkomat/parkomat/config"
+	mdns "github.com/miekg/dns"
+	"github.com/parkomat/parkomat/config"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestNSHandle(t *testing.T) {
@@ -17,13 +17,13 @@ func TestNSHandle(t *testing.T) {
 	c := &config.Config{
 		DNS: config.DNS{
 			Servers: []config.Server{
-				config.Server{
+				{
 					Name: "ns1.test.com",
-					IP: "127.0.0.1",
+					IP:   "127.0.0.1",
 				},
-				config.Server{
+				{
 					Name: "ns2.test.com",
-					IP: "127.0.0.2",
+					IP:   "127.0.0.2",
 				},
 			},
 		},

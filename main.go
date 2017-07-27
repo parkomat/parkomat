@@ -8,8 +8,8 @@ import (
 	"github.com/parkomat/parkomat/web"
 	"github.com/parkomat/parkomat/webdav"
 	"os"
-	"sync"
 	"strconv"
+	"sync"
 )
 
 func main() {
