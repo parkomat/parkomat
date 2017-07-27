@@ -132,8 +132,9 @@ func (c *Config) HasDomain(domain string) bool {
 // GetDomain gets domain details from the loaded configuration. If CatchAll is enabled it will create new
 // Domain record if it doesn't exist
 func (c *Config) GetDomain(domain string) *Domain {
-	for i, _ := range c.Domains {
-		if strings.Contains(domain, c.Domains[i].Name) {
+	lcDomain := strings.ToLower(domain)
+	for i := range c.Domains {
+		if strings.Contains(lcDomain, strings.ToLower(c.Domains[i].Name)) {
 			return c.Domains[i]
 		}
 	}

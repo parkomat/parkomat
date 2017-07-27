@@ -30,8 +30,11 @@ func NewDNS(config *config.Config) *DNS {
 		"A":   &aHandler{},
 		"MX":  &mxHandler{},
 		"TXT": &txtHandler{},
-		"SOA": NewSOAHandler(config.DNS.Servers[0].Name),
 		"NS":  NewNSHandler(config),
+	}
+
+	if len(config.DNS.Servers) > 0 {
+		h["SOA"] = NewSOAHandler(config.DNS.Servers[0].Name)
 	}
 
 	dns := &DNS{

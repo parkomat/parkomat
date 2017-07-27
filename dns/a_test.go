@@ -30,3 +30,4 @@ func TestAHandle(t *testing.T) {
 
 	assert.Exactly(t, msg.Answer, expectedMsg.Answer)
 }
+

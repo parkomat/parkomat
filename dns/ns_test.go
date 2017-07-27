@@ -17,11 +17,11 @@ func TestNSHandle(t *testing.T) {
 	c := &config.Config{
 		DNS: config.DNS{
 			Servers: []config.Server{
-				config.Server{
+				{
 					Name: "ns1.test.com",
 					IP: "127.0.0.1",
 				},
-				config.Server{
+				{
 					Name: "ns2.test.com",
 					IP: "127.0.0.2",
 				},
