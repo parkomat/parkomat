@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/parkomat/parkomat/config"
 	"github.com/parkomat/parkomat/dns"
 	"github.com/parkomat/parkomat/web"

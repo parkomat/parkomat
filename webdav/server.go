@@ -2,7 +2,7 @@ package webdav
 
 import (
 	"fmt"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/parkomat/parkomat/config"
 	"golang.org/x/net/webdav"
 	"net/http"
