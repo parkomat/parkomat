@@ -9,7 +9,7 @@ package web
 import (
 	"crypto/tls"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net"
 	"net/http"
